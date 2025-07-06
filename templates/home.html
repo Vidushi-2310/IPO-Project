@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IPO List</title>
+</head>
+<body>
+    <h1>All IPOs</h1>
+    <ul>
+        {% for ipo in ipos %}
+            <li>
+                <a href="{% url 'ipo_detail' ipo.pk %}">
+                    {{ ipo.company_name }} (Status: {{ ipo.status }})
+                </a>
+            </li>
+        {% empty %}
+            <li>No IPOs found.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
