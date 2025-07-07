@@ -1,20 +1,165 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>IPO List</title>
+  <meta charset="UTF-8" />
+  <title>Bluestock – IPO Listings</title>
+
+  <!-- Bootstrap & Animate.css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+  <!-- Custom Styling -->
+  <style>
+    body {
+  background: linear-gradient(135deg, #1b1f3b, #23395d, #26758f);
+  background-attachment: fixed;
+  font-family: 'Segoe UI', sans-serif;
+  color: #ffffff;
+  padding-top: 100px;
+  min-height: 100vh;
+}
+
+    .bluestock-header {
+      background-color: #273745;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 999;
+      padding: 15px 30px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .bluestock-header img {
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    .bluestock-header h3 {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: #fff;
+      margin: 0;
+    }
+
+    
+    .glass-box {
+      background-color: #273745;
+      border-radius: 20px;
+      padding: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      transition: 0.3s ease;
+    }
+
+    .glass-box:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .ipo-logo {
+      height: 180px;
+      object-fit: contain;
+      background-color: #fff;
+      padding: 1rem;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+    }
+
+    .status-badge {
+      font-size: 0.75rem;
+      background-color: #00e0ff;
+      color: #000;
+      padding: 0.35em 0.9em;
+      border-radius: 50px;
+      font-weight: 500;
+      display: inline-block;
+    }
+
+    .btn-style {
+      background: #00bfff;
+      color: #000;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: 0.3s ease;
+    }
+
+    .btn-style:hover {
+      background: #80eaff;
+      color: #003355;
+    }
+
+    .filter-select {
+      border-radius: 30px;
+      padding: 0.4rem 1rem;
+      border: none;
+      font-weight: 500;
+      background-color: #ffffff;
+      color: #003366;
+    }
+
+    a {
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
-    <h1>All IPOs</h1>
-    <ul>
-        {% for ipo in ipos %}
-            <li>
-                <a href="{% url 'ipo_detail' ipo.pk %}">
-                    {{ ipo.company_name }} (Status: {{ ipo.status }})
-                </a>
-            </li>
-        {% empty %}
-            <li>No IPOs found.</li>
-        {% endfor %}
-    </ul>
+
+<!-- 🔷 Bluestock Header -->
+<header class="bluestock-header">
+  <div class="d-flex align-items-center">
+    <img src="{% static 'image/bluestock_logo.png' %}" alt="Bluestock Logo" />
+    <h3 class="m-0">Bluestock Fintech</h3>
+  </div>
+  <div>
+    <a href="#" class="btn btn-primary btn-sm">Sign Up</a>
+  </div>
+</header>
+
+<!-- 📊 IPO Section -->
+<div class="container-xl">
+  <h1 class="text-center mb-2 animate__animated animate__fadeInDown">📈 IPO Listings</h1>
+  <p class="text-center text-light mb-4">Explore upcoming, ongoing, and listed IPOs powered by Bluestock.</p>
+
+  <form method="get" class="text-center mb-5">
+    <select name="status" class="filter-select">
+      <option value="">🔃 All IPOs</option>
+      <option value="upcoming" {% if request.GET.status == 'upcoming' %}selected{% endif %}>🟡 Upcoming</option>
+      <option value="ongoing" {% if request.GET.status == 'ongoing' %}selected{% endif %}>🔵 Ongoing</option>
+      <option value="listed" {% if request.GET.status == 'listed' %}selected{% endif %}>🟢 Listed</option>
+    </select>
+    <button type="submit" class="btn-style ms-2">Apply Filter</button>
+  </form>
+
+  <!-- 🧊 IPO Cards -->
+  <div class="row">
+    {% for ipo in ipos %}
+    <div class="col-md-4 mb-4">
+      <div class="glass-box h-100 animate__animated animate__fadeInUp">
+        {% if ipo.logo %}
+        <img src="{{ ipo.logo.url }}" class="ipo-logo card-img-top" alt="{{ ipo.company_name }} Logo">
+        {% endif %}
+        <div class="p-3">
+          <h5 class="card-title">{{ ipo.company_name }}</h5>
+          <p class="card-text"><span class="status-badge">{{ ipo.status }}</span></p>
+          <a href="{% url 'ipo_detail' ipo.pk %}" class="btn-style">🔍 View Details</a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="text-center text-light mt-5">
+      <p>🚫 No IPOs found for the selected filter.</p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
 </body>
 </html>

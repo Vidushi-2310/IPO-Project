@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ ipo.company_name }} - IPO Overview</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <style>
+    body {
+    background: linear-gradient(135deg, #3e5872, #5b8ea2,rgb(137, 157, 189));
+    font-family: 'Segoe UI', sans-serif;
+    color: #ffffff;
+    padding-top: 40px;
+    min-height: 100vh;
+  }
+
+  .glass-card {
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 25px rgba(0, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+
+  .card-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #fefefe;
+  }
+
+  .info-label {
+    font-weight: 600;
+    color: #c8f1ff;
+  }
+
+  .info-value {
+    font-size: 1.1rem;
+    color: #ffffff;
+  }
+
+  .badge {
+    font-size: 1rem;
+    background-color: #00e0ff;
+    color: #000;
+    padding: 0.5em 1em;
+    border-radius: 50px;
+  }
+
+  a.btn-back {
+    color: #90e0ff;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-left: 1rem;
+    text-decoration: none;
+  }
+
+  a.btn-back:hover {
+    text-decoration: underline;
+    color: #fff;
+  }
+
+  .btn-style {
+    background: #00bfff;
+    color: #000;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 40px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    margin-top: 10px;
+    transition: 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 191, 255, 0.4);
+  }
+
+  .btn-style:hover {
+    background: #80eaff;
+    color: #003355;
+  }
+
+  .logo-img {
+    max-height: 200px;
+    background: white;
+    padding: 1rem;
+    border-radius: 12px;
+  }
+  </style>
+</head>
+<body>
+
+<div class="container-xl">
+  <a href="{% url 'home' %}" class="btn-back">← Back to IPO Listings</a>
+
+  <div class="glass-card mt-4 animate__animated animate__fadeInUp">
+    <div class="row g-4 align-items-center">
+      {% if ipo.logo %}
+      <div class="col-md-4 text-center">
+        <img src="{{ ipo.logo.url }}" alt="{{ ipo.company_name }} Logo" class="logo-img img-fluid">
+      </div>
+      {% endif %}
+
+      <div class="col-md-8">
+        <h2 class="card-title mb-3">{{ ipo.company_name }}</h2>
+        <p><span class="badge text-capitalize">📌 {{ ipo.status }}</span></p>
+
+        <div class="row mt-3">
+          <div class="col-sm-6 mb-3"><span class="info-label">💰 Price Band:</span> <span class="info-value">{{ ipo.price_band }}</span></div>
+          <div class="col-sm-6 mb-3"><span class="info-label">🗓 Open Date:</span> <span class="info-value">{{ ipo.open_date }}</span></div>
+
+          <div class="col-sm-6 mb-3"><span class="info-label">🗓 Close Date:</span> <span class="info-value">{{ ipo.close_date }}</span></div>
+          <div class="col-sm-6 mb-3"><span class="info-label">📅 Listing Date:</span> <span class="info-value">{{ ipo.listing_date }}</span></div>
+
+          <div class="col-sm-6 mb-3"><span class="info-label">📦 Issue Size:</span> <span class="info-value">{{ ipo.issue_size }}</span></div>
+          <div class="col-sm-6 mb-3"><span class="info-label">📝 Issue Type:</span> <span class="info-value">{{ ipo.issue_type }}</span></div>
+
+          <div class="col-sm-6 mb-3"><span class="info-label">🏷️ IPO Price:</span> ₹<span class="info-value">{{ ipo.ipo_price }}</span></div>
+          <div class="col-sm-6 mb-3"><span class="info-label">🎯 Listing Price:</span> ₹<span class="info-value">{{ ipo.listing_price }}</span></div>
+
+          <div class="col-sm-6 mb-3"><span class="info-label">📈 Market Price:</span> ₹<span class="info-value">{{ ipo.current_market_price }}</span></div>
+          <div class="col-sm-6 mb-3"><span class="info-label">📊 Listing Gain:</span> <span class="info-value">{{ ipo.listing_gain }}%</span></div>
+
+          <div class="col-sm-6 mb-3"><span class="info-label">📉 Current Return:</span> <span class="info-value">{{ ipo.current_return }}%</span></div>
+        </div>
+
+        <div class="mt-4">
+          {% if ipo.rhp_pdf %}
+          <a href="{{ ipo.rhp_pdf.url }}" class="btn-style me-2" target="_blank">📄 Download RHP</a>
+          {% endif %}
+          {% if ipo.drhp_pdf %}
+          <a href="{{ ipo.drhp_pdf.url }}" class="btn-style" target="_blank">📄 Download DRHP</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
